@@ -3,6 +3,8 @@ project(LAB3_3)
 
 set(CMAKE_CXX_STANDARD 20)
 
+add_subdirectory(third_party/googletest)
+
 add_executable(LAB3_3 main.cpp
         "Basic Stuctures/IDictionary.h"
         Tasks/Histogram.cpp
@@ -22,5 +24,17 @@ add_executable(LAB3_3 main.cpp
         Tests/AVLDictionaryTest.h
         "Basic Stuctures/tempClass.cpp"
         "Basic Stuctures/tempClass.h"
+        Tests/AVLTreeTest.h
 )
+
+
+
+# Добавляем тесты
+enable_testing()
+add_executable(MyTests Tests/AVLTreeTest.h)
+target_link_libraries(MyTests gtest gtest_main)
+
+# Регистрируем тесты
+add_test(NAME MyTests COMMAND MyTests)
+
 

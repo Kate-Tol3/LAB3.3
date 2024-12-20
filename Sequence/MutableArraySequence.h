@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdexcept>
 #include "MutableSequence.h"
 #include "Sequence.h"
 #include "LinkedList.h"

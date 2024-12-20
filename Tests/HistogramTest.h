@@ -4,7 +4,6 @@
 #include "../Tasks/Histogram.h"
 #include "../Sequence/MutableArraySequence.h"
 
-
 struct SampleClass {
     int value;
     char category;
@@ -13,10 +12,11 @@ struct SampleClass {
     SampleClass(int v, char c) : value(v), category(c) {}
 
     friend std::ostream& operator<<(std::ostream& os, const SampleClass& obj) {
-        os << "(" << obj.value << ", " << obj.category << ")";
+        os << "{" << obj.value << ", " << obj.category << "}";
         return os;
     }
 };
+
 
 using HistogramType = Histogram<int, char, SampleClass>;
 

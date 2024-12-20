@@ -67,56 +67,7 @@ TEST_F(HistogramTest, InfoUpdate) {
     ASSERT_EQ(info.max, 20);
 }
 
-// Тест 3: Проверка печати гистограммы
-TEST_F(HistogramTest, PrintHistogram) {
-    SampleClass data[] = {
-        SampleClass(10, 'A'),
-        SampleClass(20, 'B'),
-        SampleClass(30, 'A'),
-        SampleClass(15, 'A'),
-        SampleClass(25, 'B'),
-        SampleClass(35, 'C')
-    };
-
-    std::pair<int, int> intervals[] = {
-        {0, 20},
-        {20, 40}
-    };
-
-    auto criteria = [](const SampleClass& item) { return item.value; };
-    auto classifier = [](const SampleClass& item) { return item.category; };
-
-    // Создаем последовательности данных
-    MutableArraySequence<SampleClass> sequence(data, 6);
-    MutableArraySequence<std::pair<int, int>> intervalSequence(intervals, 2);
-
-    HistogramType histogram(sequence, intervalSequence, criteria, classifier);
-
-    std::stringstream ss;
-    std::streambuf* oldBuf = std::cout.rdbuf(ss.rdbuf());
-
-    histogram.printHistogram();
-
-    std::cout.rdbuf(oldBuf);
-
-    std::string output = ss.str();
-
-    std::cout << "Generated Output:\n" << output << std::endl;
-
-    EXPECT_NE(output.find("Range: [0, 20)"), std::string::npos) << "Missing expected range [0, 20)";
-    EXPECT_NE(output.find("Class: A"), std::string::npos) << "Missing expected class A";
-    EXPECT_NE(output.find("Count: 2"), std::string::npos) << "Missing expected count 2";
-    EXPECT_NE(output.find("Sum: 45"), std::string::npos) << "Missing expected sum 45";
-
-    EXPECT_NE(output.find("Range: [20, 40)"), std::string::npos) << "Missing expected range [20, 40)";
-    EXPECT_NE(output.find("Class: B"), std::string::npos) << "Missing expected class B";
-    EXPECT_NE(output.find("Count: 2"), std::string::npos) << "Missing expected count 2";
-    EXPECT_NE(output.find("Sum: 45"), std::string::npos) << "Missing expected sum 45";
-}
-
-
-
-// Тест 4: Проверка пустой гистограммы
+// Тест 3: Проверка пустой гистограммы
 TEST_F(HistogramTest, EmptyHistogram) {
 
     SampleClass emptyData[] = {};

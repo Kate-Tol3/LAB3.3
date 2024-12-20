@@ -4,6 +4,40 @@
 #include <iostream>
 #include "../Basic_Structures/AVLDictionary.h"
 #include "../Sequence/MutableArraySequence.h"  // Для работы с последовательностями
+#include <utility>
+
+template <typename T1, typename T2>
+std::ostream& operator<<(std::ostream& os, const std::pair<T1, T2>& p) {
+    os << "[" << p.first << ", " << p.second << ")";
+    return os;
+}
+
+template <typename TInfo>
+std::istream& operator>>(std::istream& is, std::pair<TInfo, TInfo>& p) {
+    char delimiter;
+    is >> delimiter;
+    if (delimiter != '[') {
+        is.setstate(std::ios::failbit);
+        return is;
+    }
+
+    is >> p.first;
+
+    is >> delimiter;
+    if (delimiter != ',') {
+        is.setstate(std::ios::failbit);
+        return is;
+    }
+    is >> p.second;
+
+    is >> delimiter;
+    if (delimiter != ']') {
+        is.setstate(std::ios::failbit);
+    }
+
+    return is;
+}
+
 
 template <typename TInfo, typename ClassType, typename Class>
 class Histogram {
@@ -98,7 +132,7 @@ public:
                 const auto& info = classInfo.getReference(classStat);
 
                 // Печатаем информацию о диапазоне и классе
-                std::cout << "Range: [" << range.first << ", " << range.second << "), Class: "
+                std::cout << "Range: " << range << ", Class: "
                           << classStat << ", Count: " << info.count << ", Sum: " << info.sum;
 
                 // Печать Min и Max
@@ -118,6 +152,7 @@ public:
             }
         }
     }
+
 
 
 };

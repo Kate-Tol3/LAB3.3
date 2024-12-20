@@ -9,7 +9,7 @@ public:
 
     virtual void insert(const T& element) = 0;
     virtual void erase(const T& element) = 0;
-    virtual bool contains(const T& element) const = 0; //find
+    virtual bool contains(const T& element) const = 0;
     virtual int size() const = 0;
     virtual bool isEmpty() const = 0;
     virtual void clear() = 0;

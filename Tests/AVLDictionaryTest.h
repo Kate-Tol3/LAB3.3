@@ -11,7 +11,6 @@ class AVLDictionaryTest : public ::testing::Test {
 protected:
     AVLDictionary<int, std::string> dict;
 
-    // Метод, который выполняется перед каждым тестом
     void SetUp() override {
         dict.insert(1, "One");
         dict.insert(2, "Two");

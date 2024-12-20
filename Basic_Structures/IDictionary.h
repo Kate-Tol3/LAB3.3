@@ -2,11 +2,6 @@
 #ifndef IDICTIONARY_H
 #define IDICTIONARY_H
 
-
-#include <iostream>
-#include "../Pointers/SharedPtr.h"
-#include "../Sequence/Sequence.h"
-
 template <typename TKey, typename TElement>
 class IDictionary {
 public:

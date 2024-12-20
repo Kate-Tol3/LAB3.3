@@ -17,7 +17,6 @@ add_executable(LAB3_3 main.cpp
         "Basic_Structures/Range.h"
         "Basic_Structures/AVLDictionary.h"
         "Basic_Structures/AVLTree.h"
-        "Basic_Structures/IIterator.h"
         Tasks/Student/Student.h
         Basic_Structures/ISet.h
         Basic_Structures/AVLSet.h

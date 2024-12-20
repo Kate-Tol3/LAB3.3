@@ -6,7 +6,7 @@
 #define AVLTREETEST_H
 
 #include "../third_party/googletest/googletest/include/gtest/gtest.h"
-#include "../Basic_Structures/AVLTree.h"  // Подключаем ваш заголовочный файл с классом AVLTree
+#include "../Basic_Structures/AVLTree.h"
 
 
 

@@ -2,18 +2,12 @@
 #define CACHE_TEST_H
 
 #include "gtest/gtest.h"
-#include "../Tasks/Cache.h" // Путь к вашему файлу Cache.h
+#include "../Tasks/Cache.h"
 
-// Тесты для кеша
 class CacheTest : public ::testing::Test {
 protected:
-    void SetUp() override {
-        // Код для инициализации перед каждым тестом
-    }
-
-    void TearDown() override {
-        // Код для очистки после каждого теста
-    }
+    void SetUp() override {}
+    void TearDown() override {}
 };
 
 #endif // CACHE_TEST_H

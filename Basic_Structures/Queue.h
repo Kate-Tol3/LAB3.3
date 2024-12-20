@@ -6,17 +6,16 @@
 template <typename T>
 class Queue {
 private:
-    DynamicArray<T> array;  // Динамический массив для хранения данных
-    int frontIndex;         // Индекс начала очереди
-    int backIndex;          // Индекс конца очереди
-    int currentSize;        // Текущий размер очереди
-    int capacity;           // Максимальная емкость очереди
+    DynamicArray<T> array; // Динамический массив для хранения данных
+    int frontIndex; // Индекс начала очереди
+    int backIndex; // Индекс конца очереди
+    int currentSize;
+    int capacity;
 
     void resize() {
         int newCapacity = capacity * 2;
         DynamicArray<T> newArray(newCapacity);
 
-        // Копирование существующих элементов в новый массив
         for (int i = 0; i < currentSize; ++i) {
             newArray[i] = array[(frontIndex + i) % capacity];
         }
@@ -65,24 +64,20 @@ public:
         return array[frontIndex];
     }
 
-    // Проверка, пуста ли очередь
     bool isEmpty() const {
         return currentSize == 0;
     }
 
-    // Очистка очереди
     void clear() {
         frontIndex = 0;
         backIndex = -1;
         currentSize = 0;
     }
 
-    // Получение текущего размера очереди
     int size() const {
         return currentSize;
     }
 
-    // Вывод содержимого очереди (для отладки)
     void print() const {
         for (int i = 0; i < currentSize; ++i) {
             std::cout << array[(frontIndex + i) % capacity] << (i != currentSize - 1 ? " " : "");

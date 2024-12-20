@@ -12,14 +12,13 @@ private:
     AVLTree<T> tree;
 
 public:
-    // Конструктор и деструктор
     AVLSet() = default;
     ~AVLSet() = default;
 
 
     explicit AVLSet(const MutableArraySequence<T>& sequence) {
         for (int i = 0; i < sequence.getLength(); i++)
-            insert(sequence.get(i));
+            AVLSet<T>::insert(sequence.get(i));
     }
 
     AVLSet(const AVLSet<T>& set) : tree(set.tree) {}
@@ -81,7 +80,7 @@ public:
     }
 
     void clear() override {
-        tree.clear(); // Очистка дерева
+        tree.clear();
     }
 
 
@@ -110,12 +109,10 @@ public:
     }
 
 
-    // Перегрузка оператора == для сравнения множеств
     bool operator==(const ISet<T>& set) const override {
         return isEqual(set);
     }
 
-    // Итератор для AVLSet
     struct Iterator {
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
@@ -123,7 +120,7 @@ public:
         using pointer = T*;
         using reference = T&;
 
-        typename AVLTree<T>::Iterator iterator;  // Используем итератор из вашего дерева (например, из inorder обхода)
+        typename AVLTree<T>::Iterator iterator;
 
         explicit Iterator(typename AVLTree<T>::Iterator it) : iterator(it) {}
 
@@ -137,7 +134,7 @@ public:
         }
 
         Iterator& operator++() {
-            ++iterator;  // Переход к следующему элементу в дереве
+            ++iterator;
             return *this;
         }
 
@@ -156,17 +153,13 @@ public:
         }
     };
 
-    // Начало и конец итератора
     Iterator begin() {
-        return Iterator(tree.begin());  // Возвращаем итератор на первый элемент (например, в порядке inorder)
+        return Iterator(tree.begin());
     }
 
     Iterator end() {
-        return Iterator(tree.end());  // Возвращаем итератор на конец (после последнего элемента)
+        return Iterator(tree.end());
     }
-
-    const Iterator begin() const { return Iterator(tree.begin()); }
-    const Iterator end() const { return Iterator(tree.end()); }
 
 };
 

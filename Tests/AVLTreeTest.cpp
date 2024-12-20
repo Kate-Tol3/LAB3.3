@@ -1,20 +1,17 @@
 #include "AVLTreeTest.h"
 
-// Тестирование базовых операций с деревом
+
 TEST(AVLTreeTest, InsertTest) {
     AVLTree<int> tree;
 
-    // Вставляем элементы в дерево
     tree.insert(10);
     tree.insert(20);
     tree.insert(30);
     tree.insert(5);
     tree.insert(15);
 
-    // Проверка размера дерева
     EXPECT_EQ(tree.getSize(), 5);
 
-    // Проверка поиска элементов
     EXPECT_TRUE(tree.find(10));
     EXPECT_TRUE(tree.find(20));
     EXPECT_FALSE(tree.find(100));
@@ -26,14 +23,11 @@ TEST(AVLTreeTest, RemoveTest) {
     tree.insert(20);
     tree.insert(5);
 
-    // Удаляем элементы
     tree.remove(20);
     tree.remove(5);
 
-    // Проверка размера дерева
     EXPECT_EQ(tree.getSize(), 1);
 
-    // Проверка наличия элементов
     EXPECT_TRUE(tree.find(10));
     EXPECT_FALSE(tree.find(5));
     EXPECT_FALSE(tree.find(20));
@@ -45,7 +39,6 @@ TEST(AVLTreeTest, MinMaxTest) {
     tree.insert(20);
     tree.insert(5);
 
-    // Проверка минимального и максимального элементов
     EXPECT_EQ(tree.getMin(), 5);
     EXPECT_EQ(tree.getMax(), 20);
 }
@@ -58,7 +51,6 @@ TEST(AVLTreeTest, IteratorTest) {
     tree.insert(15);
     tree.insert(30);
 
-    // Проверка обхода дерева с использованием итератора
     std::vector<int> values;
     for (auto it = tree.begin(); it != tree.end(); ++it) {
         values.push_back(*it);
@@ -77,7 +69,6 @@ TEST(AVLTreeTest, ThreadedTraversalTest) {
 
     tree.threadPreOrderTraversal();
 
-    // Печать деревьев после threaded-обхода
     tree.printThreaded();
 }
 
@@ -91,7 +82,6 @@ TEST(AVLTreeTest, PreOrderTraversalTest) {
     std::vector<int> preOrderValues;
     tree.threadPreOrderTraversal();
 
-    // Проверка обхода в порядке PreOrder
     tree.printThreaded();
 }
 
@@ -105,11 +95,10 @@ TEST(AVLTreeTest, PostOrderTraversalTest) {
     std::vector<int> postOrderValues;
     tree.threadPreOrderTraversal();
 
-    // Проверка обхода в порядке PostOrder
     tree.printThreaded();
 }
 
-// Тестирование итератора через обход Морриса
+
 TEST(AVLTreeTest, MorrisIteratorTest) {
     AVLTree<int> tree;
     tree.insert(10);
@@ -127,7 +116,7 @@ TEST(AVLTreeTest, MorrisIteratorTest) {
     EXPECT_EQ(values, expected_values);
 }
 
-// Тест на удаление минимальных и максимальных элементов
+
 TEST(AVLTreeTest, RemoveMinMaxTest) {
     AVLTree<int> tree;
     tree.insert(10);
@@ -135,10 +124,10 @@ TEST(AVLTreeTest, RemoveMinMaxTest) {
     tree.insert(20);
     tree.insert(15);
 
-    tree.remove(5); // Удаляем минимальный элемент
-    tree.remove(20); // Удаляем максимальный элемент
+    tree.remove(5);
+    tree.remove(20);
 
-    EXPECT_EQ(tree.getSize(), 2); // После удаления должно остаться 2 элемента
-    EXPECT_FALSE(tree.find(5)); // 5 должно быть удалено
-    EXPECT_FALSE(tree.find(20)); // 20 должно быть удалено
+    EXPECT_EQ(tree.getSize(), 2);
+    EXPECT_FALSE(tree.find(5));
+    EXPECT_FALSE(tree.find(20));
 }

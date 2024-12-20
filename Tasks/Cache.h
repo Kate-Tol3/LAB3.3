@@ -47,8 +47,9 @@ private:
     }
 
 public:
-    Cache(int maxSetSize, int maxCacheSize, const std::string& filePath)
+    explicit Cache(int maxSetSize = 100, int maxCacheSize = 100, const std::string& filePath = "../cache.txt")
         : maxSetSize(maxSetSize), maxCacheSize(maxCacheSize), diskFilePath(filePath), queue(maxCacheSize) {}
+
 
     void put(const Key& key, const Value& value) {
         // Если ключ уже есть в cache

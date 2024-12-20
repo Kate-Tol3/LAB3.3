@@ -148,6 +148,19 @@ public:
         std::cout << std::endl;
     }
 
+    void removeAt(int index) {
+        if (index < 0 || index >= size) throw IndexOutOfRange();
+        UnqPtr<T[]> newArray(new T[size - 1]);
+        for (int i = 0; i < index; ++i) {
+            newArray[i] = array[i];
+        }
+        for (int i = index + 1; i < size; ++i) {
+            newArray[i - 1] = array[i];
+        }
+        array.swap(newArray);
+        size -= 1;
+    }
+
 
 
 };

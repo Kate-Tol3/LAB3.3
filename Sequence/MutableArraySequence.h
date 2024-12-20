@@ -103,6 +103,10 @@ public:
         return result;
     }
 
+    void remove(int index) {
+        array->removeAt(index);
+    }
+
 
     void print() const override{
         this->array->print();

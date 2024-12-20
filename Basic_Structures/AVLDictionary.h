@@ -3,7 +3,6 @@
 
 #include "AVLTree.h"
 #include "IDictionary.h"
-#include "IIterator.h"
 #include "../Sequence/MutableArraySequence.h"
 #include <stdexcept>
 
@@ -33,8 +32,8 @@ class AVLDictionary : public IDictionary<TKey, TElement> {
 private:
     AVLTree<Pair<TKey, TElement>> tree;
 
-    // Итератор для словаря
-    class Iterator {//: public IIterator<Pair<TKey, TElement>>
+
+    class Iterator {
     private:
         typename AVLTree<Pair<TKey, TElement>>::Iterator treeIterator; // Итератор для обхода дерева
 
@@ -48,22 +47,6 @@ private:
 
         explicit Iterator(typename AVLTree<Pair<TKey, TElement>>::Iterator it)
             : treeIterator(it) {}
-
-        // bool hasNext() const override {
-        //     return treeIterator.hasNext();
-        // }
-        //
-        // bool next() override {
-        //     return treeIterator.next();
-        // }
-        //
-        // const Pair<TKey, TElement>& getCurrentItem() const override {
-        //     return treeIterator.getCurrentItem();
-        // }
-        //
-        // bool tryGetCurrentItem(Pair<TKey, TElement>& currentItem) const override {
-        //     return treeIterator.tryGetCurrentItem(currentItem);
-        // }
 
 
         reference operator*() const {
@@ -96,8 +79,6 @@ private:
     };
 
 
-
-
 public:
     AVLDictionary() = default;
 
@@ -110,7 +91,6 @@ public:
     }
 
     // Получить элемент по ключу
-
      TElement get(const TKey& key) const override {
         Pair<TKey, TElement> pairToFind(key, TElement());
         auto node = tree.getNode(tree.root, pairToFind);
@@ -120,6 +100,7 @@ public:
         return node->value.element;
     }
 
+    // Получить ссылку на элемент по ключу
     const TElement& getReference(const TKey& key) const {
         Pair<TKey, TElement> pairToFind(key, TElement());
         auto node = tree.getNode(tree.root, pairToFind);
@@ -138,14 +119,12 @@ public:
         return node->value.element;
     }
 
-    // Проверить наличие ключа
     bool containsKey(const TKey& key) const override {
         Pair<TKey, TElement> pairToFind(key, TElement());
         return tree.find(pairToFind);
     }
 
-    // Добавить пару ключ-значение
-    void add(const TKey& key, const TElement& element) override {
+    void insert(const TKey& key, const TElement& element) override {
         if (containsKey(key)) {
             throw std::runtime_error("Key already exists");
         }
@@ -153,7 +132,6 @@ public:
         tree.insert(pairToAdd);
     }
 
-    // Удалить пару по ключу
     void remove(const TKey& key) override {
 
         if (!containsKey(key)) {
@@ -161,6 +139,17 @@ public:
         }
         Pair<TKey, TElement> pairToRemove(key, TElement());
         tree.remove(pairToRemove);
+    }
+
+    // Добавить или обновить пару ключ-значение
+    void set(const TKey& key, const TElement& element) override {
+        Pair<TKey, TElement> pairToSet(key, element);
+        auto node = tree.getNode(tree.root, pairToSet);
+        if (node == nullptr) {
+            tree.insert(pairToSet);
+        } else {
+            node->value.element = element;
+        }
     }
 
     // возвращает все ключи
@@ -180,7 +169,11 @@ public:
         return values;
     }
 
-    // Итератор
+    // Очищает словарь
+    void clear() override {
+        tree.clear(); // Очистка дерева
+    }
+
     Iterator begin() const {
         return Iterator(tree.begin());
     }
@@ -190,7 +183,7 @@ public:
     }
 
     Iterator getIterator() const {
-        return begin();  // getIterator эквивалентен begin
+        return begin();
     }
 };
 

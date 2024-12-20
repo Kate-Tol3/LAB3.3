@@ -188,6 +188,12 @@ public:
         }
     }
 
+    void clear() {
+        clear(root);
+        root = nullptr;
+        size = 0;
+    }
+
     int getSize() const { return size; }
 
     void insert(const T& value) {
@@ -249,14 +255,8 @@ public:
         T& operator*() { return current->value; }
         T* operator->() { return &current->value; }
 
-        // bool operator==(const Iterator& other) const {
-        //     return current == other.current;
-        // }
-        //
-        // bool operator!=(const Iterator& other) const {
-        //     return current != other.current;
-        // }
-
+        const T& operator*() const { return current->value; }
+        const T* operator->() const { return &current->value; }
 
         friend bool operator==(const Iterator &a, const Iterator &b) {
             return a.current == b.current;
@@ -265,7 +265,6 @@ public:
         friend bool operator!=(const Iterator &a, const Iterator &b) {
             return a.current != b.current;
         }
-
 
 
         Iterator& operator++() {

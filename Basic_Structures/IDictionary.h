@@ -19,8 +19,10 @@ public:
     // Методы
     virtual TElement get(const TKey& key) const = 0;
     virtual bool containsKey(const TKey& key) const = 0;
-    virtual void add(const TKey& key, const TElement& element) = 0;
+    virtual void insert(const TKey& key, const TElement& element) = 0;
     virtual void remove(const TKey& key) = 0;
+    virtual void set(const TKey& key, const TElement& element) = 0;
+    virtual void clear() = 0;
 
 };
 

@@ -27,7 +27,7 @@ TEST_F(AVLDictionaryTest, TestContainsKey) {
 
 TEST_F(AVLDictionaryTest, TestAddExistingKey) {
     // Проверяем, что не получится добавить элемент с уже существующим ключом
-    EXPECT_THROW(dict.add(1, "OneAgain"), std::runtime_error);
+    EXPECT_THROW(dict.insert(1, "OneAgain"), std::runtime_error);
 }
 
 TEST_F(AVLDictionaryTest, TestRemove) {

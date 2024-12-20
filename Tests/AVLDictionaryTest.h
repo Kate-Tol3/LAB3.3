@@ -13,8 +13,8 @@ protected:
 
     // Метод, который выполняется перед каждым тестом
     void SetUp() override {
-        dict.add(1, "One");
-        dict.add(2, "Two");
-        dict.add(3, "Three");
+        dict.insert(1, "One");
+        dict.insert(2, "Two");
+        dict.insert(3, "Three");
     }
 };

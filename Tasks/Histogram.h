@@ -53,7 +53,7 @@ private:
                 if (value >= range.first && value < range.second) {  // Если значение в диапазоне
                     auto& classInfo = histogram.getReference(range);
                     if (!classInfo.containsKey(className)) {
-                        classInfo.add(className, Info{});
+                        classInfo.insert(className, Info{});
                     }
                     classInfo.getReference(className).update(value);
                     found = true;
@@ -77,7 +77,7 @@ public:
 
         // Добавляем диапазоны в гистограмму
         for (int i = 0; i < intervalsLength; ++i) {
-            histogram.add(intervals[i], AVLDictionary<ClassType, Info>());
+            histogram.insert(intervals[i], AVLDictionary<ClassType, Info>());
         }
 
         // Строим гистограмму

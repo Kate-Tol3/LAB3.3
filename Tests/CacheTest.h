@@ -7,6 +7,7 @@
 class CacheTest : public ::testing::Test {
 protected:
     void SetUp() override {}
+
     void TearDown() override {}
 };
 

@@ -3,7 +3,6 @@
 
 #include <fstream>
 #include <optional>
-#include <sstream>
 #include <string>
 #include "../Basic_Structures/AVLDictionary.h"
 #include "../Basic_Structures/AVLSet.h"
@@ -19,7 +18,6 @@ private:
     int maxCacheSize;                // Максимальный размер для AVLDictionary
     std::string diskFilePath;        // Путь к файлу для хранения кеша на диске
 
-    // Удаление самого старого элемента из dataSet
     void evictFromSet() {
         if (dataSet.size() == 0) return;
 
@@ -27,24 +25,35 @@ private:
         dataSet.erase(oldest);
     }
 
-    // Перемещение элемента из dataSet в cache
-    void promoteToCache(const Key& key) {
-        auto it = std::find_if(dataSet.begin(), dataSet.end(), [&](const auto& pair) {
-            return pair.key == key;
-        });
+ void promoteToCache(const Key& key) {
+    std::cout << "Promoting key to cache: " << key << std::endl;
 
-        if (it != dataSet.end()) {
-            Value value = it->element;
+    auto it = std::find_if(dataSet.begin(), dataSet.end(), [&](const auto& pair) {
+        return pair.key == key;
+    });
 
-            dataSet.erase(*it);
-            if (cache.getCount() >= maxCacheSize) {
-                cache.remove(queue.front()); // удалили старый элемент из кеша
-                queue.dequeue();
-            }
-            cache.insert(key, value);
-            queue.enqueue(key);
+    if (it != dataSet.end()) {
+        Value value = it->element;
+        std::cout << "Found in dataSet: " << key << " -> " << value << std::endl;
+
+        dataSet.erase(*it);
+
+        if (cache.getCount() >= maxCacheSize) {
+            auto removedKey = queue.front();
+            std::cout << "Cache is full, removing: " << removedKey << std::endl;
+            cache.remove(removedKey);
+            queue.dequeue();
         }
+
+        cache.insert(key, value);
+        queue.enqueue(key);
+        std::cout << "Promoted to cache: " << key << " -> " << value << std::endl;
+    } else {
+        std::cout << "Key not found in dataSet: " << key << std::endl;
     }
+}
+
+
 
 public:
     explicit Cache(int maxSetSize = 100, int maxCacheSize = 100, const std::string& filePath = "../cache.txt")
@@ -52,28 +61,38 @@ public:
 
 
     void put(const Key& key, const Value& value) {
-        // Если ключ уже есть в cache
+        std::cout << "Inserting: " << key << " -> " << value << std::endl;
+
+        // Если ключ уже существует в cache, обновляем его значение
         if (cache.containsKey(key)) {
             cache.set(key, value);
+            std::cout << "Updated in cache: " << key << " -> " << value << std::endl;
             return;
         }
 
-        // Если ключ уже есть в cache dataSet
+        // Поиск ключа в dataSet
         auto it = std::find_if(dataSet.begin(), dataSet.end(), [&](const auto& pair) {
             return pair.key == key;
         });
 
+        // Если ключ уже существует в dataSet, удаляем старую запись
         if (it != dataSet.end()) {
+            std::cout << "Removing from dataSet: " << it->key << " -> " << it->element << std::endl;
             dataSet.erase(*it);
         }
 
-        // если превысили размер удаляем самый старый элемент
+        // Проверка переполнения dataSet и удаление самого старого элемента, если нужно
         if (dataSet.size() >= maxSetSize) {
+            std::cout << "Evicting oldest element from dataSet." << std::endl;
             evictFromSet();
         }
 
+        // Добавление новой пары в dataSet
         dataSet.insert(Pair<Key, Value>(key, value));
+        std::cout << "Inserted into dataSet: " << key << " -> " << value << std::endl;
     }
+
+
 
 
     std::optional<Value> get(const Key& key) {

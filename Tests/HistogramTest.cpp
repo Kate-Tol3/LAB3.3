@@ -69,7 +69,6 @@ TEST_F(HistogramTest, InfoUpdate) {
 
 // Тест 3: Проверка печати гистограммы
 TEST_F(HistogramTest, PrintHistogram) {
-    // Массив SampleClass
     SampleClass data[] = {
         SampleClass(10, 'A'),
         SampleClass(20, 'B'),
@@ -79,7 +78,6 @@ TEST_F(HistogramTest, PrintHistogram) {
         SampleClass(35, 'C')
     };
 
-    // интервалы
     std::pair<int, int> intervals[] = {
         {0, 20},
         {20, 40}
@@ -88,27 +86,34 @@ TEST_F(HistogramTest, PrintHistogram) {
     auto criteria = [](const SampleClass& item) { return item.value; };
     auto classifier = [](const SampleClass& item) { return item.category; };
 
+    // Создаем последовательности данных
     MutableArraySequence<SampleClass> sequence(data, 6);
     MutableArraySequence<std::pair<int, int>> intervalSequence(intervals, 2);
 
     HistogramType histogram(sequence, intervalSequence, criteria, classifier);
 
-    // Перенаправляем вывод в строку
     std::stringstream ss;
     std::streambuf* oldBuf = std::cout.rdbuf(ss.rdbuf());
 
     histogram.printHistogram();
 
-    std::cout.rdbuf(oldBuf);  // восстанавливаем вывод
+    std::cout.rdbuf(oldBuf);
 
     std::string output = ss.str();
-    std::cout << "Generated Output:\n" << output << std::endl;  // Отладочный вывод
 
-    ASSERT_NE(output.find("Range: [0, 20)"), std::string::npos);
-    ASSERT_NE(output.find("Class: A"), std::string::npos);
-    ASSERT_NE(output.find("Count: 2"), std::string::npos);
-    ASSERT_NE(output.find("Sum: 45"), std::string::npos);
+    std::cout << "Generated Output:\n" << output << std::endl;
+
+    EXPECT_NE(output.find("Range: [0, 20)"), std::string::npos) << "Missing expected range [0, 20)";
+    EXPECT_NE(output.find("Class: A"), std::string::npos) << "Missing expected class A";
+    EXPECT_NE(output.find("Count: 2"), std::string::npos) << "Missing expected count 2";
+    EXPECT_NE(output.find("Sum: 45"), std::string::npos) << "Missing expected sum 45";
+
+    EXPECT_NE(output.find("Range: [20, 40)"), std::string::npos) << "Missing expected range [20, 40)";
+    EXPECT_NE(output.find("Class: B"), std::string::npos) << "Missing expected class B";
+    EXPECT_NE(output.find("Count: 2"), std::string::npos) << "Missing expected count 2";
+    EXPECT_NE(output.find("Sum: 45"), std::string::npos) << "Missing expected sum 45";
 }
+
 
 
 // Тест 4: Проверка пустой гистограммы

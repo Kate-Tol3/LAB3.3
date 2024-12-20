@@ -25,6 +25,12 @@ public:
     bool operator!=(const Pair& other) const { return key != other.key; }
     bool operator<=(const Pair& other) const { return key <= other.key; }
     bool operator>=(const Pair& other) const { return key >= other.key; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Pair<TKey, TElement>& pair) {
+        os << "(" << pair.key << ", " << pair.element << ")";
+        return os;
+    }
+
 };
 
 

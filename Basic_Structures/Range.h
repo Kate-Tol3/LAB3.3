@@ -37,8 +37,6 @@ public:
         return start < other.start || (start == other.start && end < other.end);
     }
 
-
-
 };
 
 

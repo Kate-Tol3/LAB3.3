@@ -124,9 +124,30 @@ public:
         size += 1;
     }
 
+    // void print() const {
+    //     for (int i = 0; i < size; i++){
+    //         std::cout << array[i] << (i != size - 1 ? " " : ""); //.first << " " << array[i].second
+    //     }
+    // }
+
     void print() const {
-        for (int i = 0; i < size; i++){
-            std::cout << array[i].first << " " << array[i].second << (i != size - 1 ? " " : "");
+        for (int i = 0; i < size; i++) {
+            // Если тип элемента - это std::pair
+            if constexpr (std::is_same<T, std::pair<int, int>>::value) {
+                std::cout << array[i].first << " " << array[i].second;
+            }
+            // Если тип элемента - это обычное число
+            else {
+                std::cout << array[i];
+            }
+
+            if (i != size - 1) {
+                std::cout << " ";
+            }
         }
+        std::cout << std::endl;
     }
+
+
+
 };

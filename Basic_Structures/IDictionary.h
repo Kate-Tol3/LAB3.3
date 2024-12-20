@@ -21,7 +21,6 @@ public:
     virtual bool containsKey(const TKey& key) const = 0;
     virtual void add(const TKey& key, const TElement& element) = 0;
     virtual void remove(const TKey& key) = 0;
-   // virtual SharedPtr<Sequence<std::pair<TKey, TElement>>> items() const = 0;
 
 };
 

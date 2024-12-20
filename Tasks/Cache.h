@@ -8,12 +8,12 @@
 #include "../Basic_Structures/AVLSet.h"
 #include "../Basic_Structures/Queue.h"
 
-template <typename Key, typename Value>
+template <typename TKey, typename TValue>
 class Cache {
 private:
-    AVLSet<Pair<Key, Value>> dataSet; // Основное хранилище кеша (парами)
-    AVLDictionary<Key, Value> cache; // Часто запрашиваемые данные
-    Queue<Key> queue;                // Очередь для управления порядком
+    AVLSet<Pair<TKey, TValue>> dataSet; // Основное хранилище кеша (парами)
+    AVLDictionary<TKey, TValue> cache; // Часто запрашиваемые данные
+    Queue<TKey> queue;                // Очередь для управления порядком
     int maxSetSize;                  // Максимальный размер для AVLSet
     int maxCacheSize;                // Максимальный размер для AVLDictionary
     std::string diskFilePath;        // Путь к файлу для хранения кеша на диске
@@ -25,7 +25,7 @@ private:
         dataSet.erase(oldest);
     }
 
- void promoteToCache(const Key& key) {
+ void promoteToCache(const TKey& key) {
     std::cout << "Promoting key to cache: " << key << std::endl;
 
     auto it = std::find_if(dataSet.begin(), dataSet.end(), [&](const auto& pair) {
@@ -33,15 +33,15 @@ private:
     });
 
     if (it != dataSet.end()) {
-        Value value = it->element;
+        TValue value = it->element;
         std::cout << "Found in dataSet: " << key << " -> " << value << std::endl;
 
         dataSet.erase(*it);
 
         if (cache.getCount() >= maxCacheSize) {
-            auto removedKey = queue.front();
-            std::cout << "Cache is full, removing: " << removedKey << std::endl;
-            cache.remove(removedKey);
+            auto removedTKey = queue.front();
+            std::cout << "Cache is full, removing: " << removedTKey << std::endl;
+            cache.remove(removedTKey);
             queue.dequeue();
         }
 
@@ -49,7 +49,7 @@ private:
         queue.enqueue(key);
         std::cout << "Promoted to cache: " << key << " -> " << value << std::endl;
     } else {
-        std::cout << "Key not found in dataSet: " << key << std::endl;
+        std::cout << "TKey not found in dataSet: " << key << std::endl;
     }
 }
 
@@ -60,7 +60,7 @@ public:
         : maxSetSize(maxSetSize), maxCacheSize(maxCacheSize), diskFilePath(filePath), queue(maxCacheSize) {}
 
 
-    void put(const Key& key, const Value& value) {
+    void put(const TKey& key, const TValue& value) {
         std::cout << "Inserting: " << key << " -> " << value << std::endl;
 
         // Если ключ уже существует в cache, обновляем его значение
@@ -88,14 +88,14 @@ public:
         }
 
         // Добавление новой пары в dataSet
-        dataSet.insert(Pair<Key, Value>(key, value));
+        dataSet.insert(Pair<TKey, TValue>(key, value));
         std::cout << "Inserted into dataSet: " << key << " -> " << value << std::endl;
     }
 
 
 
 
-    std::optional<Value> get(const Key& key) {
+    std::optional<TValue> get(const TKey& key) {
         // Если ключ в cache
         if (cache.containsKey(key)) {
             return cache.get(key);
@@ -137,8 +137,8 @@ public:
             throw std::runtime_error("Не удалось открыть файл для чтения кеша");
         }
 
-        Key key;
-        Value value;
+        TKey key;
+        TValue value;
         while (file >> key >> value) {
             put(key, value);
         }

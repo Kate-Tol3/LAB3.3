@@ -178,6 +178,7 @@ private:
     // Метод для перемещения элемента из dataSet в cache
     void promoteToCache(const TKey& key) {
         // Ищем элемент в dataSet
+
         for (const auto& pair : dataSet) {
             if (pair.key == key) {
                 TValue value = pair.element;
@@ -186,8 +187,8 @@ private:
 
                 // Если кеш переполнен, удаляем старый элемент из cache и очереди
                 if (cache.getCount() >= maxCacheSize) {
-                    auto removedTKey = queue.front();
-                    cache.remove(removedTKey);
+                    auto removedKey = queue.front();
+                    cache.remove(removedKey);
                     queue.dequeue();
                 }
 
@@ -232,14 +233,14 @@ public:
     std::optional<TValue> get(const TKey& key) {
         // Если ключ в cache, возвращаем его
         if (cache.containsKey(key)) {
-            return cache.get(key);
+            return cache.get(key);;
         }
 
         // Если ключ в dataSet, перемещаем его в cache
         for (const auto& pair : dataSet) {
             if (pair.key == key) {
                 promoteToCache(key);
-                return pair.element;
+                return cache.get(key);
             }
         }
 
